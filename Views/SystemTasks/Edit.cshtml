@@ -1,0 +1,58 @@
+﻿@model HelpDeskSystem.Models.SystemTask
+
+@{
+    ViewData["Title"] = "Update System Task";
+}
+
+<h1>Update System Task</h1>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="CreatedById" />
+            <input type="hidden" asp-for="CreatedOn" />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Code" class="control-label"></label>
+                        <input asp-for="Code" class="form-control" />
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ParentId" class="control-label"></label>
+                        <select asp-for="ParentId" class="form-control single-select" asp-items="ViewBag.ParentId"></select>
+                        <span asp-validation-for="ParentId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="OrderNumber" class="control-label"></label>
+                        <input asp-for="OrderNumber" class="form-control" />
+                        <span asp-validation-for="OrderNumber" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-3">
+                <div class="form-group">
+                    <a class="btn btn-warning float-start" asp-action="Index"><i class="fadeIn animated bx bx-arrow-back"></i> Back to List</a>
+                    <button type="submit" class="btn btn-primary float-end"><i class="fadeIn animated bx bx-save"></i> Update System Task</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,108 @@
+﻿@model HelpDeskSystem.ViewModels.AuditTrailViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="card rounded-4">
+    <form asp-action="Index" method="post" enctype="multipart/form-data">
+        <div class="col-md-12">
+            <div class="row p-3">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Action" class="control-label"></label>
+                        <input asp-for="Action" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="Module" class="control-label"></label>
+                        <input asp-for="Module" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="AffectedTable" class="control-label"></label>
+                        <input asp-for="AffectedTable" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="AffectedColumns" class="control-label"></label>
+                        <input asp-for="AffectedColumns" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label asp-for="UserId" class="control-label"></label>
+                        <select asp-for="UserId" name="UserId" class="form-control single-select" asp-items="ViewBag.CreatedById">
+                            <option value=" ">Select User</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row p-3">
+                <div class="col-lg-2 col-md-6 d-md-flex">
+                    <button type="submit" class="btn btn-success w-100 me-md-2 mb-4"><i class="fadeIn animated bx bx-search-alt"></i> Filter</button>
+                    <a class="btn btn-primary w-100 me-md-2 mb-4"><i class="fadeIn animated bx bx-reset"></i> Reset</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="card rounded-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+        </div>
+        <div class="table-responsive">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Action)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Module)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AffectedTable)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TimeStamp)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User)
+                        </th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AuditTrails)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Action)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Module)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AffectedTable)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TimeStamp)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FullName)
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿.hummingbird-treeview,
+.hummingbird-treeview * {
+    list-style: none;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+    .hummingbird-treeview label {
+        font-weight: normal;
+    }
+
+
+    .hummingbird-treeview input[type=checkbox] {
+        width: 16px;
+        height: 16px;
+        padding: 0px;
+        margin: 0px;
+    }
+
+
+    .hummingbird-treeview .fa {
+        font-style: normal;
+        cursor: pointer;
+        color: gray;
+    }
+
+        .hummingbird-treeview .fa.fa-folder, .hummingbird-treeview .fa.fa-folder-open {
+            color: orange;
+        }
+
+
+.hummingbird-treeview {
+    max-height: 60vh;
+    overflow-y: scroll
+}

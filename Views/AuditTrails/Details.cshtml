@@ -1,0 +1,103 @@
+﻿@model HelpDeskSystem.Models.AuditTrail
+
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="card rounded-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h6 class="mb-0">System Audit Trails </h6>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-bordered table-responsive table-hover table-responsive-lg">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Id)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Action)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Action)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Module)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.Module)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AffectedTable)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.AffectedTable)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TimeStamp)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.TimeStamp)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserId)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.User.FullName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.OldValues)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.OldValues)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NewValues)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.NewValues)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AffectedColumns)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.AffectedColumns)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PrimaryKey)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(model => model.PrimaryKey)
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

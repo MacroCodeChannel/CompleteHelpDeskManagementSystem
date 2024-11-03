@@ -1,0 +1,549 @@
+﻿@model HelpDeskSystem.ViewModels.TicketDashboardViewModel
+
+@{
+    ViewData["Title"] = "Help Desk Dashboard";
+}
+<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-2 row-cols-xxl-4">
+    <div class="col">
+        <div class="card overflow-hidden rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between  rounded-4 overflow-hidden bg-pink">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Total Tickets</p>
+                        <h4 class="text-white">@Model.TicketsSummary.TotalTickets</h4>
+                    </div>
+                    <div class="w-50 p-3">
+                        <p class="mb-3 text-white text-end">@Model.TicketsSummary.TotalTickets% <i class="bi bi-arrow-up"></i></p>
+                        <div id="chart1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card overflow-hidden  rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between rounded-4 overflow-hidden bg-purple">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Assigned Tickets</p>
+                        <h4 class="text-white">@Model.TicketsSummary.AssignedTickets</h4>
+                    </div>
+                    <div class="w-50  p-3">
+                        <p class="mb-3 text-white text-end">@Model.TicketsSummary.AssignedTickets% <i class="bi bi-arrow-down"></i></p>
+                        <div id="chart2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card overflow-hidden rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between rounded-4 overflow-hidden bg-success">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Closed Tickets</p>
+                        <h4 class="text-white">@Model.TicketsSummary.ClosedTickets</h4>
+                    </div>
+                    <div class="w-50 p-3">
+                        <p class="mb-3 text-white text-end">@Model.TicketsSummary.ClosedTickets% <i class="bi bi-arrow-up"></i></p>
+                        <div id="chart3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card overflow-hidden rounded-4">
+            <div class="card-body p-2">
+                <div class="d-flex align-items-stretch justify-content-between rounded-4 overflow-hidden bg-orange">
+                    <div class="w-50 p-3">
+                        <p class="text-white">Resolved Tickets</p>
+                        <h4 class="text-white">@Model.TicketsSummary.ResolvedTickets</h4>
+                    </div>
+                    <div class="w-50 p-3">
+                        <p class="mb-3 text-white text-end">@Model.TicketsSummary.ResolvedTickets% <i class="bi bi-arrow-up"></i></p>
+                        <div id="chart4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!--end row-->
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container1"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container5"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container6"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="container4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="card rounded-4">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <h6 class="mb-0">Recent Tickets</h6>
+        </div>
+        <div class="table-responsive mt-2">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Id)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Priority)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedBy)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedOn)
+                        </th>
+                        <th>No of Comments</th>
+                        <th>Comments</th>
+                        <th>View</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Tickets)
+                    {
+                        var colorcode = "Red";
+                        if (item.Status.Code == "Resolved")
+                        {
+                            colorcode = "Green";
+                        }
+                        else if (item.Status.Code == "Escalated")
+                        {
+                            colorcode = "Yellow";
+                        }
+                        else if (item.Status.Code == "InProgress")
+                        {
+                            colorcode = "Purple";
+                        }
+                        else if (item.Status.Code == "Closed")
+                        {
+                            colorcode = "Green";
+                        }
+                        else if (item.Status.Code == "AwaitingAssigment")
+                        {
+                            colorcode = "Red";
+                        }
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Id)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Priority.Description)
+                            </td>
+                            <td style="background-color:@colorcode">
+                                @Html.DisplayFor(modelItem => item.Status.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedBy.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedOn)
+                            </td>
+                            <td style="text-align:center">
+                                <a asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id"> @item.TicketComments.Count()</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-secondary" asp-action="TicketsComments" asp-controller="Comments" asp-route-id="@item.Id">Comments</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-3d.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script type="text/javascript">
+    Highcharts.chart('container1', {
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45,
+                beta: 0
+            }
+        },
+        title: {
+            text: 'Number of Tickets Per Status PieChart',
+            align: 'left'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                depth: 35,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name}'
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Share',
+            data: [
+                ['AssignedTickets', @Model.TicketsSummary.AssignedTickets],
+                ['ClosedTickets', @Model.TicketsSummary.ClosedTickets],
+                ['ResolvedTickets', @Model.TicketsSummary.ResolvedTickets],
+                ['PendingTickets', @Model.TicketsSummary.PendingTickets],
+                ['Re-OpendTickets', @Model.TicketsSummary.ReOpenedTickets]
+            ]
+        }]
+    });
+
+
+
+    Highcharts.chart('container2', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            align: 'left',
+            text: 'Number of Tickets Per Status Bar Graph'
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total percent ticket status'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        },
+
+        series: [
+            {
+                name: 'Tickets',
+                colorByPoint: true,
+                data: [
+                    {
+                        name: 'Assinged',
+                        y: @Model.TicketsSummary.AssignedTickets
+                    },
+                    {
+                        name: 'Closed',
+                        y: @Model.TicketsSummary.ClosedTickets
+                    },
+                    {
+                        name: 'Pending',
+                        y: @Model.TicketsSummary.PendingTickets
+                    },
+                    {
+                        name: 'Resolved',
+                        y: @Model.TicketsSummary.ResolvedTickets
+                    },
+                    {
+                        name: 'ReOpened',
+                        y: @Model.TicketsSummary.ReOpenedTickets
+                    },
+                    {
+                        name: 'Escalated',
+                        y: @Model.TicketsSummary.EscalatedTickets
+                    }
+                ]
+            }
+        ]
+    });
+    Highcharts.chart('container5', {
+        chart: {
+            type: 'pie',
+            options3d: {
+                enabled: true,
+                alpha: 45
+            }
+        },
+        title: {
+            text: 'Tickets Priorities',
+            align: 'left'
+        },
+        plotOptions: {
+            pie: {
+                innerSize: 100,
+                depth: 45
+            }
+        },
+        series: [{
+            name: 'Priorities',
+            data: [
+                ['Urgent', @Model.TicketsPriority.UrgentTickets],
+                ['Medium', @Model.TicketsPriority.MediumTickets],
+                ['Very Urgent', @Model.TicketsPriority.VeryUrgentTickets]
+
+            ]
+        }]
+    });
+
+    // Create the chart
+    Highcharts.chart('container6', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            align: 'left',
+            text: 'Tickets Based on Priority'
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total  Tickets based on Priority'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: ' +
+                '<b>{point.y:.2f}%</b> of total<br/>'
+        },
+
+        series: [
+            {
+                name: 'Priorities',
+                colorByPoint: true,
+                data: [
+                    {
+                        name: 'Medium',
+                        y: @Model.TicketsPriority.MediumTickets
+                    },
+                    {
+                        name: 'Urgent',
+                        y: @Model.TicketsPriority.UrgentTickets
+                    },
+                    {
+                        name: 'Very Urgent',
+                        y: @Model.TicketsPriority.VeryUrgentTickets
+                    }
+                ]
+            }
+        ]
+    });
+
+    Highcharts.chart('container3', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            align: 'left',
+            text: 'Number of Tickets Per Priority Bar Graph'
+        },
+        accessibility: {
+            announceNewData: {
+                enabled: true
+            }
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Total  Tickets Priority'
+            }
+
+        },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        },
+
+        series: [
+            {
+                name: 'Tickets',
+                colorByPoint: true,
+                data: [
+                    {
+                        name: 'Medium',
+                        y: @Model.TicketsPriority.MediumTickets
+                    },
+                    {
+                        name: 'Urgent',
+                        y: @Model.TicketsPriority.UrgentTickets
+                    },
+                    {
+                        name: 'Very Urgent',
+                        y: @Model.TicketsPriority.VeryUrgentTickets
+                    },
+                    {
+                        name: 'Resolved',
+                        y: @Model.TicketsSummary.ResolvedTickets
+                    }
+                ]
+            }
+        ]
+    });
+
+    Highcharts.chart('container4', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            text: 'Total Number of Tickets Per Priority',
+            align: 'left'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                valueSuffix: '%'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: false
+                },
+                showInLegend: true
+            }
+        },
+        series: [{
+            name: 'Priority',
+            colorByPoint: true,
+            data: [{
+                name: 'Medium',
+                y: @Model.TicketsPriority.MediumTickets,
+                sliced: true,
+                selected: true
+            }, {
+                name: 'Urgent',
+                y: @Model.TicketsPriority.UrgentTickets
+            }, {
+                name: 'Very Urgent',
+                y: @Model.TicketsPriority.VeryUrgentTickets
+            }]
+        }]
+    });
+
+</script>

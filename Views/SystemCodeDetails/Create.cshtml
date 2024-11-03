@@ -1,0 +1,45 @@
+﻿@model HelpDeskSystem.Models.SystemCodeDetail
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>SystemCodeDetail</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderNo" class="control-label"></label>
+                <input asp-for="OrderNo" class="form-control" />
+                <span asp-validation-for="OrderNo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SystemCodeId" class="control-label"></label>
+                <select asp-for="SystemCodeId" class ="form-control" asp-items="ViewBag.SystemCodeId"></select>
+            </div>
+            <div class="row p-3">
+                <div class="form-group">
+                    <a class="btn btn-warning float-start" asp-action="Index"><i class="fadeIn animated bx bx-arrow-back"></i> Back to List</a>
+                    <button type="submit" class="btn btn-primary float-end"><i class="fadeIn animated bx bx-save"></i> Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
